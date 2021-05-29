@@ -1,0 +1,10 @@
+chainer-gogh/
+node_modules/
+__pycache__/
+*.org
+*.png
+*.caffemodel
+output_dir/
+package-lock.json
+settings.js.*
+!.gitkeep
