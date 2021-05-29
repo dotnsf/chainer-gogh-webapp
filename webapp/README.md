@@ -91,6 +91,14 @@ Backend main module of this application.
 
   - `$ conda install -c anaconda pillow`
 
+- Install cupy with conda(if you use GPU):
+
+  - `$ conda install -c anaconda cupy`
+
+- Install and setup CUDA(if you use GPU):
+
+  - https://developer.nvidia.com/cuda-downloads
+
 - Git clone `chainer-gogh`:
 
   - `$ cd chainer-gogh-webapp`
