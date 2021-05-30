@@ -6,11 +6,13 @@ var express = require( 'express' ),
     { exec } = require( 'child_process' ),
     app = express();
 
-var use_gpu = ( process.env.GPU ? true : false );
+var env_gpu = ( process.env.GPU ? true : false );
+var env_model = ( process.env.model ? process.env.model : 'nin' );
+var env_lam = ( process.env.lam ? process.env.lam : null );  //. 0.005
 var chainer_gogh_folder = __dirname + '/../chainer-gogh/';
 var sub_command = 'wget https://mydoodles.mybluemix.net/attachment/';
-//var main_command = 'python ' + chainer_gogh_folder + 'chainer-gogh.py -m ' + ( use_gpu ? 'vgg' : 'nin' ) + ' -g ' + ( use_gpu ? '0' : '-1' ) + ' -o ' + chainer_gogh_folder + 'output_dir/';
-var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py -m ' + ( use_gpu ? 'vgg' : 'nin' ) + ' -g ' + ( use_gpu ? '0' : '-1' ) + ' -o output_dir/';
+//var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py -m ' + ( use_gpu ? 'vgg' : 'nin' ) + ' -g ' + ( use_gpu ? '0' : '-1' ) + ' -o output_dir/';
+var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py' + ( env_lam ? ' --lam ' + env_lam : '' ) +  ' -m ' + env_model + ' -g ' + ( env_gpu ? '0' : '-1' ) + ' -o output_dir/';
 
 app.use( multer( { dest: './tmp/' } ).single( 'image' ) );
 app.use( bodyParser.urlencoded( { extended: true } ) );

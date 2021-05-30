@@ -46,13 +46,13 @@ Web front-end of chainer-gogh.
 
 #### How to run chainer-gogh-web
 
-- Run with node.js without GPU:
+- Run with node.js(without GPU, nin model, and lam=0.005):
 
   - `$ node app`
 
-- Run with node.js with GPU:
+- Run with node.js with GPU, vgg model, and lam=0.01:
 
-  - `$ GPU=1 node app`
+  - `$ GPU=1 model=vgg lam=0.01 node app`
 
 
 #### How to use chainer-gogh-web
@@ -109,7 +109,7 @@ Backend main module of this application.
 
   - https://www.dropbox.com/s/cphemjekve3d80n/nin_imagenet.caffemodel?dl=1
 
-- (Optional)Download vgg model, and put it to chainer-gogh foler, **if you want to run with GPU**:
+- (Optional)Download vgg model, and put it to chainer-gogh foler:
 
   - http://www.robots.ox.ac.uk/~vgg/software/very_deep/caffe/VGG_ILSVRC_16_layers.caffemodel
 
@@ -141,7 +141,7 @@ Backend main module of this application.
   ```
 
 
-#### How to run chainer-gogh with CPU
+#### How to run chainer-gogh with CPU and NIN model
 
 - Put main image(main.png) into chainer-gogh folder.
 
@@ -152,7 +152,7 @@ Backend main module of this application.
   - `$ python chainer-gogh.py -m nin -i main.png -s sub.png -o output_dir -g -1`
 
 
-#### How to run chainer-gogh with CPU
+#### How to run chainer-gogh with GPU and VGG model
 
 - Run following command (to output into output_dir/ folder):
 
