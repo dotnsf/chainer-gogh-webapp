@@ -8,7 +8,7 @@ var express = require( 'express' ),
 
 var env_gpu = ( process.env.GPU ? true : false );
 var env_model = ( process.env.model ? process.env.model : 'nin' );
-var env_lam = ( process.env.lam ? process.env.lam : null );  //. 0.005
+var env_lam = ( process.env.lam ? process.env.lam : 0.02 );  //. #5 デフォルトは 0.005
 var chainer_gogh_folder = __dirname + '/../chainer-gogh/';
 var sub_command = 'wget https://mydoodles.mybluemix.net/attachment/';
 //var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py -m ' + ( use_gpu ? 'vgg' : 'nin' ) + ' -g ' + ( use_gpu ? '0' : '-1' ) + ' -o output_dir/';
@@ -46,7 +46,7 @@ app.post( '/image', function( req, res ){
           console.log( { python_command } );
 
           exec( python_command, function( err1, result1, stderr1 ){
-            if( err1 ){
+            if( err1 ){   //. <-- 前はエラー？？今は大丈夫？？
               console.log( { err1 } );
               res.status( 400 );
               res.write( JSON.stringify( { status: false, error: err1 } ) );
