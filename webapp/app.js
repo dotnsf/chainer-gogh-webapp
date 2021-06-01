@@ -127,6 +127,24 @@ app.get( '/image/:sub_id', function( req, res ){
   }
 });
 
+app.get( '/finished/:sub_id', function( req, res ){
+  res.contentType( 'application/json; charset=utf-8' );
+
+  var sub_id = req.params.sub_id;
+  if( sub_id ){
+    //var chainer_gogh_folder = __dirname + '/../chainer-gogh/';
+    var target_folder = chainer_gogh_folder + 'output_dir/' + sub_id;
+    var exist = fs.existsSync( target_folder + '/im4950.png' );
+    res.write( JSON.stringify( { status: !exist } ) );
+    res.end();
+  }else{
+    res.contentType( 'application/json; charset=utf-8' );
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, error: 'no sub_id.' } ) );
+    res.end();
+  }
+});
+
 var port = process.env.PORT || 8080;
 app.listen( port );
 console.log( "server starting on " + port + " ..." );

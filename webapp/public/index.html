@@ -127,7 +127,17 @@ function reloadResult( sub_id ){
 
   setTimeout( function(){
     if( processing ){
-      reloadResult( sub_id );
+      $.ajax({
+        type: 'GET',
+        url: '/finished/' + sub_id,
+        success: function( result ){
+          processing = !result.status;
+          reloadResult( sub_id );
+        },
+        error: function( e0, e1, e2 ){
+          processing = false;
+        }
+      });
     }
   }, 10000 );
 }
