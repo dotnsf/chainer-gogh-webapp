@@ -126,6 +126,7 @@ function reloadResult( sub_id ){
   $('#result_image_div').html( '<img id="result_image" width="300" src="/image/' + sub_id + '?ts=' + ts + '"/>' );
 
   setTimeout( function(){
+    /*
     if( processing ){
       $.ajax({
         type: 'GET',
@@ -139,6 +140,8 @@ function reloadResult( sub_id ){
         }
       });
     }
+    */
+    reloadResult( sub_id );
   }, 10000 );
 }
 </script>
