@@ -3,6 +3,7 @@
 See [webapp/README.md](https://github.com/dotnsf/chainer-gogh-webapp/blob/main/webapp/README.md) for detail.
 
 
+
 ## Licensing
 
 This code is licensed under MIT.
