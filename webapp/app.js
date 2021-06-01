@@ -6,13 +6,12 @@ var express = require( 'express' ),
     { exec } = require( 'child_process' ),
     app = express();
 
+var env_python = ( process.env.python ? process.env.python : 'python' );
 var env_gpu = ( process.env.GPU ? true : false );
 var env_model = ( process.env.model ? process.env.model : 'nin' );
 var env_lam = ( process.env.lam ? process.env.lam : 0.02 );  //. #5 デフォルトは 0.005
 var chainer_gogh_folder = __dirname + '/../chainer-gogh/';
 var sub_command = 'wget https://mydoodles.mybluemix.net/attachment/';
-//var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py -m ' + ( use_gpu ? 'vgg' : 'nin' ) + ' -g ' + ( use_gpu ? '0' : '-1' ) + ' -o output_dir/';
-var main_command = 'cd ' + chainer_gogh_folder + ' && python chainer-gogh.py' + ( env_lam ? ' --lam ' + env_lam : '' ) +  ' -m ' + env_model + ' -g ' + ( env_gpu ? '0' : '-1' ) + ' -o output_dir/';
 
 app.use( multer( { dest: './tmp/' } ).single( 'image' ) );
 app.use( bodyParser.urlencoded( { extended: true } ) );
@@ -42,6 +41,7 @@ app.post( '/image', function( req, res ){
           */
         }else{
           //console.log( { result0 } );
+          var main_command = 'cd ' + chainer_gogh_folder + ' && ' + env_python + ' chainer-gogh.py' + ( env_lam ? ' --lam ' + env_lam : '' ) +  ' -m ' + env_model + ' -g ' + ( env_gpu ? '0' : '-1' ) + ' -o output_dir/';
           var python_command = main_command + sub_id + ' -i ' + __dirname + '/' + req.file.path + ' -s ' + __dirname + '/tmp/' + sub_id + '.png';
           console.log( { python_command } );
 
