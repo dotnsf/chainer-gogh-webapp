@@ -134,7 +134,7 @@ app.get( '/finished/:sub_id', function( req, res ){
   if( sub_id ){
     //var chainer_gogh_folder = __dirname + '/../chainer-gogh/';
     var target_folder = chainer_gogh_folder + 'output_dir/' + sub_id;
-    var exist = fs.existsSync( target_folder + '/im4950.png' );
+    var exist = fs.existsSync( target_folder + '/im_4950.png' );
     res.write( JSON.stringify( { status: !exist } ) );
     res.end();
   }else{
