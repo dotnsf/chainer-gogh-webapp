@@ -18,71 +18,85 @@ app.use( bodyParser.urlencoded( { extended: true } ) );
 app.use( bodyParser.json() );
 app.use( express.static( __dirname + '/public' ) );
 
+var processing = false;
 app.post( '/image', function( req, res ){
   res.contentType( 'application/json; charset=utf-8' );
 
-  if( req.file && req.file.path ){
-    if( req.body.sub_id ){
-      var sub_id = req.body.sub_id;
-      var wget_command = sub_command + sub_id + ' -O ' + __dirname + '/tmp/' + sub_id + '.png';
-      console.log( { wget_command } );
-      exec( wget_command, function( err0, result0, stderr0 ){
-        if( err0 ){
-          console.log( { err0 } );
-          res.status( 400 );
-          res.write( JSON.stringify( { status: false, error: err0 } ) );
-          res.end();
-          /*
-        }else if( stderr0 ){
-          console.log( { stderr0 } );
-          res.status( 400 );
-          res.write( JSON.stringify( { status: false, error: stderr0 } ) );
-          res.end();
-          */
-        }else{
-          //console.log( { result0 } );
-          var main_command = 'cd ' + chainer_gogh_folder + ' && ' + env_python + ' chainer-gogh.py' + ( env_lam ? ' --lam ' + env_lam : '' ) +  ' -m ' + env_model + ' -g ' + ( env_gpu ? '0' : '-1' ) + ' -o output_dir/';
-          var python_command = main_command + sub_id + ' -i ' + __dirname + '/' + req.file.path + ' -s ' + __dirname + '/tmp/' + sub_id + '.png';
-          console.log( { python_command } );
-
-          exec( python_command, function( err1, result1, stderr1 ){
-            if( err1 ){   //. <-- 前はエラー？？今は大丈夫？？
-              console.log( { err1 } );
-              res.status( 400 );
-              res.write( JSON.stringify( { status: false, error: err1 } ) );
-              res.end();
-            }else if( stderr1 ){
-              console.log( { stderr1 } );
-              res.status( 400 );
-              res.write( JSON.stringify( { status: false, error: stderr1 } ) );
-              res.end();
-            }else{
-              console.log( { result1 } );
-              res.write( JSON.stringify( { status: true, result: result1 } ) );
-              res.end();
-            }
-          });
-
-          setTimeout( function(){
-            fs.unlink( req.file.path, function( err ){} );
-            fs.unlink( __dirname + '/tmp/' + sub_id, function( err ){} );
-
-            //. これを返したら上の python プロセスは止まる？
-            //. ノンブロッキングなら返す必要ない？
-            //res.write( JSON.stringify( { status: true } ) );
-            //res.end();
-          }, 10000 );
-        }
-      });
+  if( processing ){
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, error: 'still processing.' } ) );
+    res.end();
+  }else{
+    if( req.file && req.file.path ){
+      if( req.body.sub_id ){
+        processing = true;
+        var sub_id = req.body.sub_id;
+        var wget_command = sub_command + sub_id + ' -O ' + __dirname + '/tmp/' + sub_id + '.png';
+        console.log( { wget_command } );
+        exec( wget_command, function( err0, result0, stderr0 ){
+          if( err0 ){
+            processing = false;
+            console.log( { err0 } );
+            res.status( 400 );
+            res.write( JSON.stringify( { status: false, error: err0 } ) );
+            res.end();
+            /*
+          }else if( stderr0 ){
+            console.log( { stderr0 } );
+            res.status( 400 );
+            res.write( JSON.stringify( { status: false, error: stderr0 } ) );
+            res.end();
+            */
+          }else{
+            //console.log( { result0 } );
+            var main_command = 'cd ' + chainer_gogh_folder + ' && ' + env_python + ' chainer-gogh.py' + ( env_lam ? ' --lam ' + env_lam : '' ) +  ' -m ' + env_model + ' -g ' + ( env_gpu ? '0' : '-1' ) + ' -o output_dir/';
+            var python_command = main_command + sub_id + ' -i ' + __dirname + '/' + req.file.path + ' -s ' + __dirname + '/tmp/' + sub_id + '.png';
+            console.log( { python_command } );
+  
+            exec( python_command, function( err1, result1, stderr1 ){
+              if( err1 ){   //. <-- 前はエラー？？今は大丈夫？？
+                processing = false;
+                console.log( { err1 } );
+                res.status( 400 );
+                res.write( JSON.stringify( { status: false, error: err1 } ) );
+                res.end();
+              }else if( stderr1 ){
+                processing = false;
+                console.log( { stderr1 } );
+                res.status( 400 );
+                res.write( JSON.stringify( { status: false, error: stderr1 } ) );
+                res.end();
+              }else{
+                processing = false;
+                console.log( { result1 } );
+                res.write( JSON.stringify( { status: true, result: result1 } ) );
+                res.end();
+              }
+            });
+  
+            setTimeout( function(){
+              fs.unlink( req.file.path, function( err ){} );
+              fs.unlink( __dirname + '/tmp/' + sub_id, function( err ){} );
+  
+              //. これを返したら上の python プロセスは止まる？
+              //. ノンブロッキングなら返す必要ない？
+              //res.write( JSON.stringify( { status: true } ) );
+              //res.end();
+            }, 10000 );
+          }
+        });
+      }else{
+        processing = false;
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, error: 'no sub file.' } ) );
+        res.end();
+      }
     }else{
+      processing = false;
       res.status( 400 );
-      res.write( JSON.stringify( { status: false, error: 'no sub file.' } ) );
+      res.write( JSON.stringify( { status: false, error: 'no main file.' } ) );
       res.end();
     }
-  }else{
-    res.status( 400 );
-    res.write( JSON.stringify( { status: false, error: 'no main file.' } ) );
-    res.end();
   }
 });
 
