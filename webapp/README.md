@@ -167,6 +167,8 @@ https://chime-note.hatenablog.com/entry/chainer-gogh-using-gpu
 
 https://qiita.com/virtual_techX/items/d234d063cd638f4daa59
 
+https://tech.preferred.jp/ja/blog/chainer-gogh/
+
 
 ## Licensing
 
