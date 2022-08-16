@@ -14,7 +14,7 @@ var env_gpu = ( process.env.GPU ? true : false );
 var env_model = ( process.env.model ? process.env.model : 'nin' );
 var env_lam = ( process.env.lam ? process.env.lam : 0.5 );  //. #5 デフォルトは 0.005
 var chainer_gogh_folder = __dirname + sep + '..' + sep + 'chainer-gogh' + sep;
-var sub_command = 'wget https://mydoodles.mybluemix.net/attachment/';
+var sub_command = 'wget https://mydoodles.yellowmix.net/attachment/';
 
 app.use( multer( { dest: '.' + sep + 'tmp' + sep } ).single( 'image' ) );
 app.use( bodyParser.urlencoded( { extended: true } ) );

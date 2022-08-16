@@ -44,32 +44,6 @@ Web front-end of chainer-gogh.
   - `$ npm install`
 
 
-#### How to run chainer-gogh-web
-
-- Run with node.js(without GPU, nin model, and lam=0.005):
-
-  - `$ node app`
-
-- Run with node.js with GPU, vgg model, and lam=0.01:
-
-  - `$ GPU=1 model=vgg lam=0.01 node app`
-
-
-#### How to use chainer-gogh-web
-
-- Access to web page:
-
-  - http://localhost:8080/
-
-- Input MyDoodle ID as style image.
-
-  - Transparent background would be regarded as `black`.
-
-- Specify image file as main image.
-
-- Click `RESULT` button.
-
-
 ### chainer-gogh
 
 Backend main module of this application.
@@ -91,25 +65,29 @@ Backend main module of this application.
 
   - `$ conda install -c anaconda pillow`
 
-- Install cupy with conda(if you use GPU):
-
-  - `$ conda install -c anaconda cupy`
-
-- Install and setup CUDA(if you use GPU):
-
-  - https://developer.nvidia.com/cuda-downloads
-
 - Git clone `chainer-gogh`:
 
   - `$ cd chainer-gogh-webapp`
 
   - `$ git clone https://github.com/mattya/chainer-gogh`
 
+- Create images output directory:
+
+  - `$ mkdir chainer-gogh/output_dir`
+
 - Download nin model, and put it to chainer-gogh foler:
 
   - https://www.dropbox.com/s/cphemjekve3d80n/nin_imagenet.caffemodel?dl=1
 
-- (Optional)Download vgg model, and put it to chainer-gogh foler:
+- (Optional)Install cupy with conda(if you use GPU):
+
+  - `$ conda install -c anaconda cupy`
+
+- (Optional)Install and setup CUDA(if you use GPU):
+
+  - https://developer.nvidia.com/cuda-downloads
+
+- (Optional)Download vgg model, and put it to chainer-gogh foler(if you use GPU):
 
   - http://www.robots.ox.ac.uk/~vgg/software/very_deep/caffe/VGG_ILSVRC_16_layers.caffemodel
 
@@ -157,6 +135,32 @@ Backend main module of this application.
 - Run following command (to output into output_dir/ folder):
 
   - `$ python chainer-gogh.py -m vgg -i main.png -s sub.png -o output_dir -g 0`
+
+
+#### How to run chainer-gogh-web
+
+- Run with node.js(without GPU, nin model, and lam=0.005):
+
+  - `$ node app`
+
+- Run with node.js with GPU, vgg model, and lam=0.01:
+
+  - `$ GPU=1 model=vgg lam=0.01 node app`
+
+
+#### How to use chainer-gogh-web
+
+- Access to web page:
+
+  - http://localhost:8080/
+
+- Input MyDoodle ID as style image.
+
+  - Transparent background would be regarded as `black`.
+
+- Specify image file as main image.
+
+- Click `RESULT` button.
 
 
 ## References
